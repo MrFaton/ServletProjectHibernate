@@ -1,17 +1,22 @@
 package com.nixsolutions.ponarin.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "ROLE")
 public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ROLE_ID", nullable = false)
     private Integer id;
+
+    @Column(name = "NAME", nullable = false, unique = true, length = 50)
     private String name;
-
-    public Role() {
-    }
-
-    public Role(Integer id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-    }
 
     public Integer getId() {
         return id;

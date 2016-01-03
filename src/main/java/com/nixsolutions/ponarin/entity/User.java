@@ -2,31 +2,47 @@ package com.nixsolutions.ponarin.entity;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
+@Table(name = "USER")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "USER_ID", nullable = false)
     private Long id;
+
+    @Column(name = "LOGIN", nullable = false, unique = true, length = 50)
     private String login;
+
+    @Column(name = "PASSWORD", nullable = false, length = 50)
     private String password;
+
+    @Column(name = "EMAIL", nullable = false, unique = true, length = 50)
     private String email;
+
+    @Column(name = "FIRST_NAME", nullable = false, length = 50)
     private String firstName;
+
+    @Column(name = "LAST_NAME", nullable = false, length = 50)
     private String lastName;
+
+    @Column(name = "BIRTH_DAY", nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date birthDay;
+
+    @ManyToOne
+    @JoinColumn(name = "ROLE_ID")
     private Role role;
-
-    public User() {
-    }
-
-    public User(Long id, String login, String password, String email,
-            String firstName, String lastName, Date birthDay, Role role) {
-        super();
-        this.id = id;
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDay = birthDay;
-        this.role = role;
-    }
 
     public Long getId() {
         return id;
