@@ -1,51 +1,51 @@
 package com.nixsolutions.ponarin.dao.impl;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.nixsolutions.ponarin.dao.RoleDao;
 import com.nixsolutions.ponarin.entity.Role;
-import com.nixsolutions.ponarin.utils.JPAUtils;
+import com.nixsolutions.ponarin.utils.HibernateUtil;
 
-public class HibernateRoleDao implements RoleDao {
+public class HibernateRoleDao implements RoleDao{
 
     @Override
     public void create(Role role) {
-        EntityManager manager = JPAUtils.getMannager();
-        manager.getTransaction().begin();
-        manager.persist(role);
-        manager.getTransaction().commit();
-        manager.close();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.save(role);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public void update(Role role) {
-        EntityManager manager = JPAUtils.getMannager();
-        manager.getTransaction().begin();
-        manager.merge(role);
-        manager.getTransaction().commit();
-        manager.close();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.update(role);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public void remove(Role role) {
-        EntityManager manager = JPAUtils.getMannager();
-        manager.getTransaction().begin();
-        manager.remove(role);
-        manager.getTransaction().commit();
-        manager.close();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        session.delete(role);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
     public Role findByName(String name) {
-        String query = "SELECT r FROM Role r WHERE NAME=:name";
-        EntityManager manager = JPAUtils.getMannager();
-        manager.getTransaction().begin();
-        Role role = (Role) manager.createQuery(query).setParameter("name", name)
-                .getSingleResult();
-        manager.getTransaction().commit();
-        manager.close();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(Role.class);
+        criteria.add(Restrictions.eq("name", name));
+        Role role = (Role) criteria.uniqueResult();
+        session.getTransaction().commit();
+        session.close();
         return role;
     }
 

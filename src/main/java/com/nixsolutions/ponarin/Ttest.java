@@ -3,23 +3,28 @@ package com.nixsolutions.ponarin;
 import com.nixsolutions.ponarin.dao.RoleDao;
 import com.nixsolutions.ponarin.dao.impl.HibernateRoleDao;
 import com.nixsolutions.ponarin.entity.Role;
-import com.nixsolutions.ponarin.utils.JPAUtils;
+import com.nixsolutions.ponarin.utils.HibernateUtil;
 
 public class Ttest {
     public static void main(String[] args) {
         try {
             RoleDao roleDao = new HibernateRoleDao();
-//            Role role = new Role();
-//            role.setName("Admin");
-//            roleDao.create(role);
-//            roleDao.update(role);
-            Role adminRole = roleDao.findByName("Admin");
-            roleDao.remove(adminRole);
-            adminRole = roleDao.findByName("Admin");
-            System.out.println(adminRole);
+            Role roleA = new Role();
+            roleA.setName("Admin");
+            
+            roleDao.create(roleA);
+            
+            Role role = roleDao.findByName(roleA.getName());
+            System.out.println(role);
+            roleDao.remove(role);
         } catch (Exception ex) {
             ex.printStackTrace();
+            
+        } finally {
+            HibernateUtil.getSessionFactory().close();
         }
-        JPAUtils.closeFactory();
+        
+        
+        
     }
 }
