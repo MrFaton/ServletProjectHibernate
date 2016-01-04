@@ -18,7 +18,7 @@ import com.nixsolutions.ponarin.validator.UserFormValidator;
 
 public class HibernateUserService implements UserService {
     private static final Logger logger = LoggerFactory
-            .getLogger(JdbcUserService.class);
+            .getLogger(HibernateUserService.class);
     private UserDao userDao = new HibernateUserDao();
     private RoleDao roleDao = new HibernateRoleDao();
     private UserFormValidator userFormValidator = new UserFormValidator();
@@ -39,7 +39,7 @@ public class HibernateUserService implements UserService {
         checkLogin(userForm.get("login"));
         checkEmail(userForm.get("email"));
         Role role = roleDao.findByName(userForm.get("role"));
-        User user = userUtils.getUserByForm(userForm, role.getId());
+        User user = userUtils.getUserByForm(userForm, role);
         userDao.create(user);
     }
 
@@ -62,7 +62,7 @@ public class HibernateUserService implements UserService {
         logger.trace("update user by user form");
         userFormValidator.validate(userForm);
         Role role = roleDao.findByName(userForm.get("role"));
-        User user = userUtils.getUserByForm(userForm, role.getId());
+        User user = userUtils.getUserByForm(userForm, role);
 
         User loadedUser = userDao.findByLogin(user.getLogin());
         user.setId(loadedUser.getId());

@@ -15,13 +15,11 @@ import com.nixsolutions.ponarin.service.UserService;
 import com.nixsolutions.ponarin.service.impl.HibernateUserService;
 
 public class UsersTableTag extends SimpleTagSupport {
-    private String group;
-    private List<User> userList;
     private UserService userService = new HibernateUserService();
 
     @Override
     public void doTag() throws JspException, IOException {
-        userList = userService.findAll();
+        List<User> userList = userService.findAll();
 
         PageContext pageContext = (PageContext) getJspContext();
         String editControllerPath = pageContext.getServletContext()
@@ -81,14 +79,6 @@ public class UsersTableTag extends SimpleTagSupport {
         strBuilder.append("</table>");
         out.println(strBuilder.toString());
 
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
     }
 
     private int getAge(Date birthDay) {

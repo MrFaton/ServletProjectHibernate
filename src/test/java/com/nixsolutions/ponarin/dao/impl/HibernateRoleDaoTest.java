@@ -144,12 +144,4 @@ public class HibernateRoleDaoTest {
         Role role = roleDao.findByName(roles[2].getName());
         Assert.assertEquals("Roles must equals", roles[2], role);
     }
-
-    @Test
-    public void testFindById() {
-        HibernateRoleDao hibernateRoleDao = (HibernateRoleDao) roleDao;
-        Role role = hibernateRoleDao.findById(roles[0].getId());
-
-        Assert.assertEquals("Roles must equals", roles[0], role);
-    }
 }

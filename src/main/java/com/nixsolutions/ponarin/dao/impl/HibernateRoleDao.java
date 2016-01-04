@@ -111,26 +111,4 @@ public class HibernateRoleDao implements RoleDao {
             daoUtils.closeSession(session);
         }
     }
-
-    public Role findById(int id) {
-        logger.trace("searching role by id = " + id);
-
-        Session session = null;
-        try {
-            session = HibernateUtils.getSessionFactory().openSession();
-            session.beginTransaction();
-
-            Role role = session.get(Role.class, id);
-
-            session.getTransaction().commit();
-            return role;
-        } catch (Exception ex) {
-            logger.error(ex.getMessage(), ex);
-            daoUtils.rollBackTransaction(session);
-            throw new RuntimeException(ex);
-        } finally {
-            daoUtils.closeSession(session);
-        }
-    }
-
 }
