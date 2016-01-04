@@ -36,10 +36,13 @@ public class JdbcConnectionPool {
                 throw new RuntimeException(message);
             }
 
-            String jdbcDriver = properties.getProperty("jdbc.driver");
-            String jdbcUser = properties.getProperty("jdbc.user");
-            String jdbcPassword = properties.getProperty("jdbc.password");
-            String jdbcUrl = properties.getProperty("jdbc.url");
+            String jdbcDriver = properties
+                    .getProperty("hibernate.connection.driver_class");
+            String jdbcUser = properties
+                    .getProperty("hibernate.connection.username");
+            String jdbcPassword = properties
+                    .getProperty("hibernate.connection.password");
+            String jdbcUrl = properties.getProperty("hibernate.connection.url");
 
             pool = initPool(jdbcDriver, jdbcUser, jdbcPassword, jdbcUrl);
         }
@@ -97,10 +100,10 @@ public class JdbcConnectionPool {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static void shutDown() {
         if (pool != null) {
-            pool.shutdown();
+            pool.close();
         }
     }
 }

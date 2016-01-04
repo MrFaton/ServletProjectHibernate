@@ -14,20 +14,19 @@ import org.slf4j.LoggerFactory;
 import com.nixsolutions.ponarin.Constants;
 import com.nixsolutions.ponarin.entity.User;
 import com.nixsolutions.ponarin.service.UserService;
-import com.nixsolutions.ponarin.service.impl.JdbcUserService;
+import com.nixsolutions.ponarin.service.impl.HibernateUserService;
 import com.nixsolutions.ponarin.utils.UserUtils;
 
 public class EditController extends HttpServlet {
     private static final Logger logger = LoggerFactory
             .getLogger(EditController.class);
     private static final long serialVersionUID = 1L;
-    private UserService userService = new JdbcUserService();
+    private UserService userService = new HibernateUserService();
     private UserUtils userUtils = new UserUtils();
 
     @Override
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        logger.trace("inside doPost");
         String login = request.getParameter(Constants.PARAM_LOGIN);
 
         User user = userService.findByLogin(login);

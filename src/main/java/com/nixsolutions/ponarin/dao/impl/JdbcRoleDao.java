@@ -29,9 +29,9 @@ public class JdbcRoleDao extends AbstractJdbsDao implements RoleDao {
 
     private static final String SQL_SELECT = ""
             + "SELECT * FROM TRAINEESHIP_DB.ROLE";
-    
+
     private DaoUtils daoUtils = new DaoUtils();
-    
+
     @Override
     public void create(Role role) {
         logger.trace("create " + role);

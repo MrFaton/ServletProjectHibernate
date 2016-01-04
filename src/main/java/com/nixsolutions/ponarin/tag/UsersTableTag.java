@@ -10,18 +10,18 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import com.nixsolutions.ponarin.dao.UserDao;
-import com.nixsolutions.ponarin.dao.impl.JdbcUserDao;
 import com.nixsolutions.ponarin.entity.User;
+import com.nixsolutions.ponarin.service.UserService;
+import com.nixsolutions.ponarin.service.impl.HibernateUserService;
 
 public class UsersTableTag extends SimpleTagSupport {
     private String group;
     private List<User> userList;
-    private UserDao userDao = new JdbcUserDao();
+    private UserService userService = new HibernateUserService();
 
     @Override
     public void doTag() throws JspException, IOException {
-        userList = userDao.findAll();
+        userList = userService.findAll();
 
         PageContext pageContext = (PageContext) getJspContext();
         String editControllerPath = pageContext.getServletContext()

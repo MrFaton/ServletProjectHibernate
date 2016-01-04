@@ -8,19 +8,19 @@ import org.slf4j.LoggerFactory;
 
 import com.nixsolutions.ponarin.dao.RoleDao;
 import com.nixsolutions.ponarin.dao.UserDao;
-import com.nixsolutions.ponarin.dao.impl.JdbcRoleDao;
-import com.nixsolutions.ponarin.dao.impl.JdbcUserDao;
+import com.nixsolutions.ponarin.dao.impl.HibernateRoleDao;
+import com.nixsolutions.ponarin.dao.impl.HibernateUserDao;
 import com.nixsolutions.ponarin.entity.Role;
 import com.nixsolutions.ponarin.entity.User;
 import com.nixsolutions.ponarin.service.UserService;
 import com.nixsolutions.ponarin.utils.UserUtils;
 import com.nixsolutions.ponarin.validator.UserFormValidator;
 
-public class JdbcUserService implements UserService {
+public class HibernateUserService implements UserService {
     private static final Logger logger = LoggerFactory
             .getLogger(JdbcUserService.class);
-    private UserDao userDao = new JdbcUserDao();
-    private RoleDao roleDao = new JdbcRoleDao();
+    private UserDao userDao = new HibernateUserDao();
+    private RoleDao roleDao = new HibernateRoleDao();
     private UserFormValidator userFormValidator = new UserFormValidator();
     private UserUtils userUtils = new UserUtils();
 
@@ -126,4 +126,5 @@ public class JdbcUserService implements UserService {
             throw new IllegalArgumentException(msg);
         }
     }
+
 }

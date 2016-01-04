@@ -13,18 +13,17 @@ import org.slf4j.LoggerFactory;
 import com.nixsolutions.ponarin.Constants;
 import com.nixsolutions.ponarin.entity.User;
 import com.nixsolutions.ponarin.service.UserService;
-import com.nixsolutions.ponarin.service.impl.JdbcUserService;
+import com.nixsolutions.ponarin.service.impl.HibernateUserService;
 
 public class AuthFilter extends BaseFilter {
     private static final Logger logger = LoggerFactory
             .getLogger(AuthFilter.class);
-    private UserService userService = new JdbcUserService();
+    private UserService userService = new HibernateUserService();
 
     @Override
     public void doFilter(HttpServletRequest request,
             HttpServletResponse response, FilterChain filterChain)
                     throws IOException, ServletException {
-        logger.trace("inside doFilter");
         String servletPath = request.getServletPath();
 
         // Allow non authorized pages

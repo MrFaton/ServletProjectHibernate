@@ -38,7 +38,7 @@ public class JdbcUserDao extends AbstractJdbsDao implements UserDao {
 
     private static final String SQL_SELECT = ""
             + "SELECT * FROM TRAINEESHIP_DB.USER";
-    
+
     private UserValidator userValidator = new UserValidator();
     private DaoUtils daoUtils = new DaoUtils();
 

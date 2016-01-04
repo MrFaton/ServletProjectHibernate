@@ -1,34 +1,36 @@
 package com.nixsolutions.ponarin.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.nixsolutions.ponarin.dao.RoleDao;
-import com.nixsolutions.ponarin.entity.Role;
+import com.nixsolutions.ponarin.dao.UserDao;
+import com.nixsolutions.ponarin.entity.User;
 import com.nixsolutions.ponarin.utils.DaoUtils;
 import com.nixsolutions.ponarin.utils.HibernateUtils;
+import com.nixsolutions.ponarin.validator.UserValidator;
 
-public class HibernateRoleDao implements RoleDao {
+public class HibernateUserDao implements UserDao {
     private static final Logger logger = LoggerFactory
-            .getLogger(HibernateRoleDao.class);
+            .getLogger(HibernateUserDao.class);
+    private UserValidator userValidator = new UserValidator();
     private DaoUtils daoUtils = new DaoUtils();
 
     @Override
-    public void create(Role role) {
-        logger.trace("create " + role);
+    public void create(User user) {
+        logger.trace("create " + user);
 
-        if (role.getName().length() == 0) {
-            throw new IllegalArgumentException("Role's name is empty");
-        }
+        userValidator.validate(user);
 
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.save(role);
+            session.save(user);
             session.getTransaction().commit();
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
@@ -40,17 +42,16 @@ public class HibernateRoleDao implements RoleDao {
     }
 
     @Override
-    public void update(Role role) {
-        logger.trace("update " + role);
+    public void update(User user) {
+        logger.trace("update " + user);
 
-        if (role.getName().length() == 0) {
-            throw new IllegalArgumentException("Role's name is empty");
-        }
+        userValidator.validate(user);
+
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.update(role);
+            session.update(user);
             session.getTransaction().commit();
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
@@ -62,18 +63,18 @@ public class HibernateRoleDao implements RoleDao {
     }
 
     @Override
-    public void remove(Role role) {
-        logger.trace("remove " + role);
+    public void remove(User user) {
+        logger.trace("remove " + user);
 
-        if (role.getId() == null) {
-            throw new IllegalArgumentException("Role's id requiered");
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("User's id == null");
         }
 
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
-            session.delete(role);
+            session.delete(user);
             session.getTransaction().commit();
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
@@ -85,24 +86,20 @@ public class HibernateRoleDao implements RoleDao {
     }
 
     @Override
-    public Role findByName(String name) {
-        logger.trace("searching for role by name = " + name);
-
-        if (name.length() == 0) {
-            throw new IllegalArgumentException("Role's name is empty");
-        }
+    public List<User> findAll() {
+        logger.trace("find all users");
 
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
 
-            Criteria criteria = session.createCriteria(Role.class);
-            criteria.add(Restrictions.eq("name", name));
-            Role role = (Role) criteria.uniqueResult();
+            Criteria criteria = session.createCriteria(User.class);
+            @SuppressWarnings("unchecked")
+            List<User> userList = criteria.list();
 
             session.getTransaction().commit();
-            return role;
+            return userList;
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             daoUtils.rollBackTransaction(session);
@@ -112,18 +109,53 @@ public class HibernateRoleDao implements RoleDao {
         }
     }
 
-    public Role findById(int id) {
-        logger.trace("searching role by id = " + id);
+    @Override
+    public User findByLogin(String login) {
+        logger.trace("find user by login = " + login);
+
+        if (login.length() == 0) {
+            throw new IllegalArgumentException("Login is empty");
+        }
 
         Session session = null;
         try {
             session = HibernateUtils.getSessionFactory().openSession();
             session.beginTransaction();
 
-            Role role = session.get(Role.class, id);
+            Criteria criteria = session.createCriteria(User.class);
+            criteria.add(Restrictions.eq("login", login));
+            User user = (User) criteria.uniqueResult();
 
             session.getTransaction().commit();
-            return role;
+            return user;
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            daoUtils.rollBackTransaction(session);
+            throw new RuntimeException(ex);
+        } finally {
+            daoUtils.closeSession(session);
+        }
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        logger.trace("find user by email = " + email);
+
+        if (email.length() == 0) {
+            throw new IllegalArgumentException("Email is empty");
+        }
+
+        Session session = null;
+        try {
+            session = HibernateUtils.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            Criteria criteria = session.createCriteria(User.class);
+            criteria.add(Restrictions.eq("email", email));
+            User user = (User) criteria.uniqueResult();
+
+            session.getTransaction().commit();
+            return user;
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
             daoUtils.rollBackTransaction(session);
