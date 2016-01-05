@@ -16,7 +16,7 @@ import org.dbunit.ext.h2.H2DataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
 import org.h2.tools.RunScript;
 
-import com.nixsolutions.ponarin.pool.JdbcConnectionPool;
+import com.nixsolutions.ponarin.utils.JdbcConnectionPool;
 
 public class DbTestHelper {
     protected static final String SCHEMA = "TRAINEESHIP_DB";

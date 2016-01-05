@@ -1,4 +1,4 @@
-package com.nixsolutions.ponarin.pool;
+package com.nixsolutions.ponarin.utils;
 
 import java.io.IOException;
 import java.sql.Connection;
