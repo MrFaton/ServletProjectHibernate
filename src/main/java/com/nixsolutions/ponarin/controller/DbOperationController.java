@@ -66,9 +66,8 @@ public class DbOperationController extends HttpServlet {
             response.sendRedirect(
                     request.getContextPath() + Constants.PAGE_MAIN);
         } catch (IllegalArgumentException badArg) {
-            logger.debug(
-                    "Bad argument occurs during handling action: " + action,
-                    badArg);
+            logger.debug("Bad argument occurs during handling action: " + action
+                    + ". " + badArg.getMessage());
             request.setAttribute(Constants.ATTR_USER_FORM, userForm);
             request.setAttribute(Constants.ATTR_ERROR_MESSAGE,
                     badArg.getMessage());
