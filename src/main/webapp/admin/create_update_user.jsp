@@ -26,15 +26,6 @@
 
 	<form action="${pageContext.request.contextPath}/admin/user_operations.do"
 		method="post">
-
-		<c:if test="${edit==null}">
-			<input type="hidden" name="action" value="create">
-		</c:if>
-
-		<c:if test="${edit!=null}">
-			<input type="hidden" name="action" value="update">
-		</c:if>
-
 		<table align="left" border="0" cellpadding="2" cellspacing="5">
 
 			<tr>
